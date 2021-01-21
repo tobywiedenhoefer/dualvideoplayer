@@ -7,19 +7,20 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
-        <h3 id="">Place YouTube URLs:</h3>
-        <p>Video URL:</p>
-        <input type="text" id="videoID" placeholder="Video ID">
+        <h3 id="Header">Place YouTube URLs:</h3>
+        <div class="fieldInputs">
+            <label for="videoID">Video URL:</label>
+            <input type="text" id="videoID" placeholder="Video ID">
 
-        <br>
+            <br>
 
-        <p>Sound URL:</p>
-        <input type="text" id="soundID" placeholder="Sound ID">
+            <label for="soundID">Sound URL:</label>
+            <input type="text" id="soundID" placeholder="Sound ID">
+        </div>
 
-        <button id="submitURLs">Submit</button>
+        <input type=submit id="submitURLs"></input>
 
         <script type="text/javascript">
-            document.getElementById("submitURLs").addEventListener("keyup", validURL)
             function validVideoURL() {
                 url = document.getElementById("videoID").value
                 if(url.indexOf("youtube.com/watch?v=") >= 0 && url.split("watch?v=")[1].length > 1) {
@@ -28,6 +29,7 @@
                     return false
                 }
             };
+
             function validSoundURL() {
                 url = document.getElementById("soundID").value
                 if(url.indexOf("youtube.com/watch?v=") >= 0 && url.split("watch?v=")[1].length > 1) {
@@ -37,23 +39,18 @@
                 }
             };
 
-            function validURL() {
-                if(validSoundURL() && validVideoURL()) {
-                    document.getElementById("submitURLs").disable = false
-                } else {
-                    document.getElementById("submitURLs").disable = true
-                }
-            }
-
             function getVideoID(url) {
                 var x = url.split("watch?v=")[1];
                 return x
             };
 
             document.getElementById("submitURLs").onclick = function() {
-                location.href = "/play/video=" + getVideoID(document.getElementById("videoID").value) + "&sound=" + getVideoID(document.getElementById("soundID").value) + ""
-            }
-
+                if(validVideoURL() && validSoundURL()) {
+                    location.href = "/play/video=" + getVideoID(document.getElementById("videoID").value) + "&sound=" + getVideoID(document.getElementById("soundID").value) + "";
+                } else {
+                    alert("Please enter a valid YouTube URL.")
+                };
+            };
 
         </script>
     </body>
