@@ -6,21 +6,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript">
-            var videoID = {{ ids.videoid|tojson }}
+            var videoID = {{ ids.videoid|tojson }};
+            var soundID = {{ ids.soundid|tojson }} 
         </script>
     </head>
     <body>
-        <div id="player"></div>
+        <div id="playerOne"></div>
+        <br>
+        <button id="playboth">Play/Pause</button>
+        <div id="playerTwo"></div>
+
         <script type="text/javascript">
-            var tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
+            var tagOne = document.createElement('script');
+            tagOne.src = "https://www.youtube.com/iframe_api";
+
+            var tagTwo = document.createElement('script');
+            tagTwo.src = "https://www.youtube.com/iframe_api"
 
             var firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            firstScriptTag.parentNode.insertBefore(tagOne, firstScriptTag);
 
-            var player;
+            var secondScriptTag = document.getElementsByTagName('script')[1];
+            secondScriptTag.parentNode.insertBefore(tagTwo, secondScriptTag)
+
+            var playerOne;
+            var playerTwo;
             function onYouTubeIframeAPIReady() {
-                player = new YT.Player('player', {
+                playerOne = new YT.Player('playerOne', {
                     height: '390',
                     width: '640',
                     videoId: videoID,
@@ -29,7 +41,16 @@
                         'onStateChange': onPlayerStateChange
                     },
                     host: 'https://www.youtube.com'
-                })
+                });
+                playerTwo = new YT.Player('playerTwo', {
+                    height: '390',
+                    width: '640',
+                    videoId: soundID,
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
             };
 
             function onPlayerReady(event) {
@@ -45,7 +66,8 @@
             };
 
             function stopVideo() {
-                player.stopVideo()
+                playerOne.stopVideo();
+                playerTwo.stopVideo();
             };
 
         </script>
